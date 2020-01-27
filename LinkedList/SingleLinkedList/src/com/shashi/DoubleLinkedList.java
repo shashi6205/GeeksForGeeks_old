@@ -63,7 +63,7 @@ public class DoubleLinkedList {
             return;
         }else{
             Node current = head;
-            Node temp = new Node(0);
+            Node temp = new Node(0); //node creeated with dummy data which is not used
             while(current.next != null){
                 temp.next = current.next;
                 temp.prev = current.prev;
@@ -77,6 +77,45 @@ public class DoubleLinkedList {
             current.prev = temp.next;
             head = current;
         }
+    }
+
+    public void swapKthNode(int pos){
+        Node fast_ptr = head;
+        Node slow_ptr = head; //will be pointing to Kth node from last node at the end of the while loop
+        Node prevToKthNode = head;
+        Node kthNode = head;
+        Node prevToslow_ptr = head;
+        int counter = 1;
+        while(fast_ptr.next != null){
+            if(counter >= pos){
+                if(counter == pos){
+                    prevToKthNode = fast_ptr.prev;
+                    kthNode = fast_ptr;
+                }
+                slow_ptr = slow_ptr.next;
+            }
+            counter++;
+            fast_ptr = fast_ptr.next;
+        }
+        prevToslow_ptr = slow_ptr.prev;
+
+        Node swapNode = new Node(0); //swap of node is done using a temporary node
+        swapNode.next = slow_ptr.next;
+        swapNode.prev = slow_ptr.prev;
+        slow_ptr.next = kthNode.next;
+        slow_ptr.prev = kthNode.prev;
+        kthNode.next = swapNode.next;
+        kthNode.prev = swapNode.prev;
+
+        if(pos == 1){ //the case where the first node is swapped with last
+            prevToslow_ptr.next = kthNode;
+            head = fast_ptr;
+            return;
+        }
+
+        swapNode.next = prevToslow_ptr.next; //using temporary node to change links for the previous nodesof kth nodes
+        prevToslow_ptr.next = prevToKthNode.next;
+        prevToKthNode.next = swapNode.next;
     }
 
     public void printList(){
@@ -107,5 +146,10 @@ public class DoubleLinkedList {
         /*dlist.reverseList();
         System.out.print("Reversed List: ");
         dlist.printList();*/
+
+        //Swap Kth node from beginning with Kth node from end in a Linked List
+        dlist.swapKthNode(1);
+        System.out.print("Swapped List: ");
+        dlist.printList();
     }
 }

@@ -84,7 +84,7 @@ public class DoubleLinkedList {
         Node slow_ptr = head; //will be pointing to Kth node from last node at the end of the while loop
         Node prevToKthNode = head;
         Node kthNode = head;
-        Node prevToslow_ptr = head;
+        Node prevToslow_ptr;
         int counter = 1;
         while(fast_ptr.next != null){
             if(counter >= pos){
@@ -99,6 +99,10 @@ public class DoubleLinkedList {
         }
         prevToslow_ptr = slow_ptr.prev;
 
+        if(pos > counter){
+            System.out.println("The kth value given is outside the list.");
+            return;
+        }
         Node swapNode = new Node(0); //swap of node is done using a temporary node
         swapNode.next = slow_ptr.next;
         swapNode.prev = slow_ptr.prev;
@@ -109,6 +113,16 @@ public class DoubleLinkedList {
 
         if(pos == 1){ //the case where the first node is swapped with last
             prevToslow_ptr.next = kthNode;
+            head = fast_ptr;
+            return;
+        }
+        if(pos == counter){ //when the last node is swapped with first i.e. K = length of list
+            swapNode.prev = fast_ptr.prev;
+            fast_ptr.prev = null;
+            fast_ptr.next = slow_ptr.next;
+            slow_ptr.next = null;
+            slow_ptr.prev = swapNode.prev;
+            swapNode.prev.next = slow_ptr;
             head = fast_ptr;
             return;
         }
@@ -148,7 +162,7 @@ public class DoubleLinkedList {
         dlist.printList();*/
 
         //Swap Kth node from beginning with Kth node from end in a Linked List
-        dlist.swapKthNode(1);
+        dlist.swapKthNode(5);
         System.out.print("Swapped List: ");
         dlist.printList();
     }
